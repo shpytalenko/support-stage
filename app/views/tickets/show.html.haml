@@ -1,0 +1,101 @@
+= content_for :sidebar do
+  %h3 History
+  - @ticket.audits.all.each do |audit|
+    - if audit.action !="create"
+      %div.alert
+        %span{:style=>"bold;"}
+          - if audit.user_id != nil
+            = " #{User.find_by_id(audit.user_id).email} #{audit.action} "
+          - else
+            = " #{@ticket.name} #{audit.action} "
+        %br
+        = "#{audit.audited_changes}"
+- model_class = Ticket
+.page-header
+  %h1=t '.title', :default => model_class.model_name.human
+
+%div.row
+  %div.span3
+    %strong= model_class.human_attribute_name(:name) + ':'
+    %br
+    = @ticket.name
+  %div.span3
+    %strong= model_class.human_attribute_name(:email) + ':'
+    %br
+    = @ticket.email
+  %div.span3
+    %strong= model_class.human_attribute_name(:department) + ':'
+    %br
+    = @ticket.department
+%div.row
+  %div.span3
+    %strong= model_class.human_attribute_name(:subject) + ':'
+    %br
+    = @ticket.subject
+  %div.span3
+    %strong= model_class.human_attribute_name(:no) + ':'
+    %br
+    = @ticket.no
+  %div.span3
+    %strong= model_class.human_attribute_name(:url) + ':'
+    %br
+    = link_to "#{ticket_path(@ticket)}", ticket_path(@ticket)
+%p
+  %strong= model_class.human_attribute_name(:status_id) + ':'
+  %br
+    %span.badge.badge-warning
+      = @ticket.status.name
+<hr>
+- if user_signed_in?
+  %div.row
+    = form_for @ticket, :html => { :class => 'form-inline' } do |f|
+      %div.span3
+        .control-group
+          = f.label :staff, :class => 'control-label'
+          .controls
+            = f.collection_select(:user_id, User.all, :id, :email)  
+      %div.span3
+        .control-group
+          = f.label :status_id, :class => 'control-label'
+          .controls
+            = f.collection_select(:status_id, Status.all, :id, :name) 
+      %div.span3
+        %br
+        = f.submit nil, :class => 'btn btn-primary'
+<hr>
+%p
+  %strong= model_class.human_attribute_name(:content) + ':'
+  %br
+  %br
+  %span.alert.alert-info
+    = @ticket.content
+%p
+ 
+%hr
+  - @ticket.replies.all.each do |reply|
+    %hr
+    %p.info 
+      = "#{reply.author} (#{time_ago_in_words(reply.created_at)})" 
+    %p.well
+      = reply.content
+
+%hr
+  = form_for @reply, :html => { :class => 'form-horizontal' } do |f|
+    .control-group
+      = f.label :content, :class => 'control-label'
+      .controls
+        = f.text_area :content, :class => 'text_area', :rows => 3, :required => true
+    .control-group
+      = f.label :author, :class => 'control-label'
+      .controls
+        = f.text_field :author, :class => 'text_field' , :required => true
+    .control-group{:style=>"display:none;"}
+      = f.label :ticket_id, :class => 'control-label'
+      .controls
+        = f.collection_select(:ticket_id, Ticket.all, :id, :id)  
+    .form-actions
+      = f.submit "Add reply", :class => 'btn btn-primary btn-small'
+- if user_signed_in?
+  .form-actions
+    = link_to t('.back', :default => t("helpers.links.back")), tickets_path, :class => 'btn'
+    =# link_to t('.destroy', :default => t("helpers.links.destroy")), ticket_path(@ticket), :method => "delete", :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger'

@@ -1,0 +1,40 @@
+= form_for @ticket, :html => { :class => 'form-horizontal' } do |f|
+  .control-group
+    = f.label :name, :class => 'control-label'
+    .controls
+      = f.text_field :name, :class => 'text_field', :required => true
+  .control-group
+    = f.label :email, :class => 'control-label'
+    .controls
+      = f.text_field :email, :class => 'text_field',  :type => "email", :required => true
+  .control-group
+    = f.label :department, :class => 'control-label'
+    .controls
+      = f.text_field :department, :class => 'text_field' , :required => true
+  .control-group
+    = f.label :subject, :class => 'control-label'
+    .controls
+      = f.text_field :subject, :class => 'text_field' ,:required => true
+  .control-group
+    = f.label :content, :class => 'control-label'
+    .controls
+      = f.text_area :content, :class => 'text_field', :rows=>3, :required => true
+  
+  - if user_signed_in?
+    .control-group
+      = f.label :staff, :class => 'control-label'
+      .controls
+        = f.collection_select(:user_id, User.all, :id, :email)  
+    .control-group
+      = f.label :status_id, :class => 'control-label'
+      .controls
+        = f.collection_select(:status_id, Status.all, :id, :name)  
+  - else 
+    .control-group{:style=>"display:none;"}
+      = f.label :status_id, :class => 'control-label'
+      .controls
+        = f.collection_select(:status_id, Status.all, :id, :name)
+  .form-actions
+    = f.submit nil, :class => 'btn btn-primary'
+    - if user_signed_in?
+      = link_to t('.cancel', :default => t("helpers.links.cancel")), tickets_path, :class => 'btn'

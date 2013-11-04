@@ -1,0 +1,55 @@
+- model_class = Ticket
+= content_for :sidebar do
+  - if user_signed_in?
+    = form_for @search, :url => tickets_path, :html => {:method => :get}  do |f|
+      = f.label :name_contains 
+      = f.text_field :name_contains 
+      %br
+      = f.label :email_contains 
+      = f.text_field :email_contains 
+      %br
+      = f.label :subject_contains 
+      = f.text_field :subject_contains 
+      %br
+      = f.label :status_id_equals 
+      = f.collection_select :status_id_equals, Status.all, :id, :name, :include_blank => true
+      %br
+      = f.label :user_id_equals 
+      = f.collection_select :user_id_equals, User.all, :id, :email, :include_blank => true
+      %br
+      
+      /= f.label :tickets_created_at_greater_than, 'With comments after'
+      /= f.datetime_select :tickets_created_at_greater_than, :include_blank => true
+
+      %p
+        = f.submit "search", :class=>"btn"
+    %hr
+      = link_to "Show My Tickets", "/tickets?utf8=✓&search%5Buser_id_equals%5D=#{current_user.id}&commit=search", :class =>"btn btn-info"
+.page-header
+  %h1=t '.title', :default => model_class.model_name.human.pluralize
+%table.table.table-striped
+  %thead
+    %tr
+      %th= model_class.human_attribute_name(:name)
+      %th= model_class.human_attribute_name(:email)
+      %th= model_class.human_attribute_name(:department)
+      %th= model_class.human_attribute_name(:subject)
+      %th= model_class.human_attribute_name(:no)
+      %th= model_class.human_attribute_name(:status_id)
+      %th= model_class.human_attribute_name(:created_at)
+      %th=t '.actions', :default => t("helpers.actions")
+  %tbody
+    - @tickets.each do |ticket|
+      %tr
+        %td= ticket.name
+        %td= ticket.email
+        %td= ticket.department
+        %td= ticket.subject
+        %td= link_to ticket.no, ticket_path(ticket)
+        %td= ticket.status.name
+        %td= time_ago_in_words(ticket.created_at)
+        %td
+          = link_to t('view details', :default => t("helpers.links.edit")), ticket_path(ticket), :class => 'btn btn-mini'
+          = link_to t('.destroy', :default => t("helpers.links.destroy")), ticket_path(ticket), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-mini btn-danger'
+
+= link_to t('.new', :default => t("helpers.links.new")), new_ticket_path, :class => 'btn btn-primary'
