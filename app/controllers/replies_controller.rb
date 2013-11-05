@@ -1,4 +1,5 @@
 class RepliesController < ApplicationController
+ before_filter :authenticate_user!, :except => [:create]
   def index
     @replies = Reply.all
   end
@@ -14,7 +15,7 @@ class RepliesController < ApplicationController
   def create
     @reply = Reply.new(params[:reply])
     if @reply.save
-        if @reply.author == @reply.ticket.email
+        if @reply.author_type == "Customer"
           @reply.ticket.update_attributes(:status_id=>1)
         else
           @reply.ticket.update_attributes(:status_id=>2)

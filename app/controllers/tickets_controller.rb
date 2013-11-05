@@ -1,23 +1,17 @@
 class TicketsController < ApplicationController
-  #before_filter :authenticate_user!, :except => [:new, :show]
+  before_filter :authenticate_user!, :except => [:new, :show, :update, :create]
   def index
-    
       @search = Ticket.search(params[:search])
       @tickets = @search.all
-    #if params[:search].present?
-     # @tickets = Search.all
-    #else
-     # @tickets = Ticket.all
-    #end
-  end
+   end
 
   def show
     @ticket = Ticket.find(params[:id])
     @reply = @ticket.replies.new
     if current_user.present?
-      @reply.author=current_user.email 
+      @reply.author=current_user 
     else
-      @reply.author=@ticket.email 
+      @reply.author = Customer.find_by_email(@ticket.email) 
     end
   end
 

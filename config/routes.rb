@@ -1,5 +1,7 @@
 Support::Application.routes.draw do
   
+  resources :customers
+
   devise_for :users
 
    root :to => 'tickets#new'

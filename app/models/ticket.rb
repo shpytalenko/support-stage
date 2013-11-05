@@ -10,7 +10,8 @@ class Ticket < ActiveRecord::Base
   has_many :replies, :dependent => :destroy
   belongs_to :status
   belongs_to :user
-  before_create :generate_no
+  before_create :generate_no, :save_customer
+  
   # Number format ABC-123456
  
     
@@ -18,5 +19,11 @@ private
  def generate_no
   no = "#{ (0...3).map { (65 + rand(26)).chr }.join}-#{ (0...6).map { rand(10) }.join}"
   self.no = no 
+ end
+
+ def save_customer
+  if Customer.find_by_email(email) == nil
+    Customer.create(:name=> name, :email => email )
+  end 
  end
 end

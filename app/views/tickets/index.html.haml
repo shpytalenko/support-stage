@@ -8,8 +8,8 @@
       = f.label :email_contains 
       = f.text_field :email_contains 
       %br
-      = f.label :subject_contains 
-      = f.text_field :subject_contains 
+      = f.label :content_contains 
+      = f.text_field :content_contains 
       %br
       = f.label :status_id_equals 
       = f.collection_select :status_id_equals, Status.all, :id, :name, :include_blank => true
@@ -30,22 +30,22 @@
 %table.table.table-striped
   %thead
     %tr
+      %th= model_class.human_attribute_name(:no)
       %th= model_class.human_attribute_name(:name)
       %th= model_class.human_attribute_name(:email)
       %th= model_class.human_attribute_name(:department)
       %th= model_class.human_attribute_name(:subject)
-      %th= model_class.human_attribute_name(:no)
       %th= model_class.human_attribute_name(:status_id)
       %th= model_class.human_attribute_name(:created_at)
       %th=t '.actions', :default => t("helpers.actions")
   %tbody
     - @tickets.each do |ticket|
       %tr
+        %td= link_to ticket.no, ticket_path(ticket)
         %td= ticket.name
         %td= ticket.email
         %td= ticket.department
         %td= ticket.subject
-        %td= link_to ticket.no, ticket_path(ticket)
         %td= ticket.status.name
         %td= time_ago_in_words(ticket.created_at)
         %td

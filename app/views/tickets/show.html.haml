@@ -75,9 +75,13 @@
   - @ticket.replies.all.each do |reply|
     %hr
     %p.info 
-      = "#{reply.author} (#{time_ago_in_words(reply.created_at)})" 
-    %p.well
-      = reply.content
+      = "#{reply.author.email} (#{time_ago_in_words(reply.created_at)})" 
+    - if reply.author_type == "Customer"
+      %p.alert
+        = reply.content
+    - else
+      %p.well
+        = reply.content
 
 %hr
   = form_for @reply, :html => { :class => 'form-horizontal' } do |f|
@@ -85,10 +89,11 @@
       = f.label :content, :class => 'control-label'
       .controls
         = f.text_area :content, :class => 'text_area', :rows => 3, :required => true
-    .control-group
+    .control-group{:style => "display:none;"}
       = f.label :author, :class => 'control-label'
       .controls
-        = f.text_field :author, :class => 'text_field' , :required => true
+        = f.number_field :author_id
+        = f.text_field :author_type
     .control-group{:style=>"display:none;"}
       = f.label :ticket_id, :class => 'control-label'
       .controls
