@@ -2,6 +2,8 @@ source 'https://rubygems.org'
 
 gem 'rails', '3.2.9'
 gem 'devise'
+gem 'will_paginate'
+gem "wice_grid", '3.2.0.pre1'
 gem "ckeditor", "3.7.3"
 gem 'taps'
 gem 'heroku'
@@ -13,7 +15,7 @@ gem "friendly_id"
 gem "audited-activerecord", "~> 3.0"
 gem 'uuid'
 gem 'pg'
-# Bundle edge Rails instead:
+gem 'delayed_job_active_record' # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 

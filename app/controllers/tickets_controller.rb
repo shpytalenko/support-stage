@@ -21,7 +21,10 @@ class TicketsController < ApplicationController
 
   def create
     @ticket = Ticket.new(params[:ticket])
+    
     if @ticket.save
+      # send mail with delayed_job
+      TicketMailer.delay.ticket_update_information(@ticket)  
       redirect_to @ticket, :notice => "Successfully created ticket."
     else
       render :action => 'new'

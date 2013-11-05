@@ -57,6 +57,11 @@ GEM
     debugger-linecache (1.1.2)
       debugger-ruby_core_source (>= 1.1.1)
     debugger-ruby_core_source (1.1.7)
+    delayed_job (3.0.5)
+      activesupport (~> 3.0)
+    delayed_job_active_record (0.4.1)
+      activerecord (>= 2.1.0, < 4)
+      delayed_job (~> 3.0)
     devise (2.1.2)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
@@ -192,6 +197,8 @@ GEM
       macaddr (~> 1.0)
     warden (1.2.1)
       rack (>= 1.0)
+    wice_grid (3.2.0.pre1)
+    will_paginate (3.0.5)
 
 PLATFORMS
   ruby
@@ -202,6 +209,7 @@ DEPENDENCIES
   ckeditor (= 3.7.3)
   coffee-rails (~> 3.2.1)
   debugger
+  delayed_job_active_record
   devise
   friendly_id
   haml-rails
@@ -222,3 +230,5 @@ DEPENDENCIES
   twitter-bootstrap-rails
   uglifier (>= 1.0.3)
   uuid
+  wice_grid (= 3.2.0.pre1)
+  will_paginate

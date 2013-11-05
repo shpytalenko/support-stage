@@ -11,10 +11,10 @@ class Ticket < ActiveRecord::Base
   belongs_to :status
   belongs_to :user
   before_create :generate_no, :save_customer
-  after_create :send_email
+  #after_create :send_emeal
   # Number format ABC-123456
  
-    
+   
 private
  def generate_no
   no = "#{ (0...3).map { (65 + rand(26)).chr }.join}-#{ (0...6).map { rand(10) }.join}"
@@ -27,7 +27,5 @@ private
   end 
  end
 
-  def send_email
-    TicketMailer.ticket_update_information(self).deliver
-  end
+  
 end
