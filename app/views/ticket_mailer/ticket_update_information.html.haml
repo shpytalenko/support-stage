@@ -1,0 +1,12 @@
+%h5
+  Hi,
+  = @ticket.name
+%h4
+  Ticket Subject
+  = @ticket.subject
+%h5
+  Ticket Status:
+  = @ticket.status.name
+%h5 
+  Link to your ticket:
+  = link_to @ticket.no , ticket_url(@ticket)

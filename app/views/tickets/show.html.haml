@@ -39,7 +39,7 @@
   %div.span3
     %strong= model_class.human_attribute_name(:url) + ':'
     %br
-    = link_to "#{ticket_path(@ticket)}", ticket_path(@ticket)
+    = link_to "#{ticket_path(@ticket)}", ticket_url(@ticket)
 %p
   %strong= model_class.human_attribute_name(:status_id) + ':'
   %br

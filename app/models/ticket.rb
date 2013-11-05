@@ -11,7 +11,7 @@ class Ticket < ActiveRecord::Base
   belongs_to :status
   belongs_to :user
   before_create :generate_no, :save_customer
-  
+  after_create :send_email
   # Number format ABC-123456
  
     
@@ -26,4 +26,8 @@ private
     Customer.create(:name=> name, :email => email )
   end 
  end
+
+  def send_email
+    TicketMailer.ticket_update_information(self).deliver
+  end
 end
