@@ -12,6 +12,7 @@ gem "meta_search"
 gem "friendly_id"
 gem "audited-activerecord", "~> 3.0"
 gem 'uuid'
+gem 'pg'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
